@@ -5,7 +5,8 @@ export default function TitleBar() {
 
   useEffect(() => {
     window.electronAPI.getWindowState().then(setMaximized)
-    window.electronAPI.onWindowStateChanged(setMaximized)
+    const unsubscribe = window.electronAPI.onWindowStateChanged(setMaximized)
+    return () => { unsubscribe() }
   }, [])
 
   return (

@@ -75,7 +75,7 @@ export default function App() {
   const handleExportPng = useCallback(async () => {
     if (!treeRef.current) return
     try {
-      await exportToPng(treeRef.current)
+      await exportToPng(treeRef.current, 'json-tree.png', isDark)
       messageApi.success('PNG 已导出')
     } catch {
       messageApi.error('导出 PNG 失败')
@@ -85,7 +85,7 @@ export default function App() {
   const handleExportPdf = useCallback(async () => {
     if (!treeRef.current) return
     try {
-      await exportToPdf(treeRef.current)
+      await exportToPdf(treeRef.current, 'json-tree.pdf', isDark)
       messageApi.success('PDF 已导出')
     } catch {
       messageApi.error('导出 PDF 失败')

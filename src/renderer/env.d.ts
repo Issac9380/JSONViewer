@@ -6,7 +6,6 @@ interface ElectronAPI {
   closeWindow: () => Promise<void>
   openFile: () => Promise<{ content: string; filePath: string } | null>
   saveFile: (content: string) => Promise<boolean>
-  readDroppedFile: (filePath: string) => Promise<{ content: string; filePath: string } | null>
   getWindowState: () => Promise<boolean>
   onWindowStateChanged: (callback: (maximized: boolean) => void) => () => void
 }

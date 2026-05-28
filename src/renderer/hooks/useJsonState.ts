@@ -100,7 +100,7 @@ export function useJsonState() {
       const parsed = JSON.parse(state.raw)
       const formatted = JSON.stringify(parsed, null, 2)
       setState(prev => ({ ...prev, raw: formatted, formatted }))
-      parseJson(formatted)
+      parseJson(formatted, true)
     } catch {
       // can't format invalid JSON
     }

@@ -8,6 +8,7 @@ function createWindow(): void {
   mainWindow = new BrowserWindow({
     width: 1200,
     height: 800,
+    show: false,
     minWidth: 800,
     minHeight: 600,
     title: 'JSON Viewer',
@@ -76,15 +77,6 @@ ipcMain.handle('save-file', async (_event, content: string) => {
     return true
   } catch {
     return false
-  }
-})
-
-ipcMain.handle('read-dropped-file', async (_event, filePath: string) => {
-  try {
-    const content = await readFile(filePath, 'utf-8')
-    return { content, filePath }
-  } catch {
-    return null
   }
 })
 

@@ -29,14 +29,14 @@ export default function StatusBar({ isValid, error, isLarge, selectedPath, selec
             <CheckCircleOutlined style={{ marginRight: 4 }} />
             JSON 有效
           </span>
-        ) : error ? (
-          <span style={{ color: '#f14c4c' }}>
-            <CloseCircleOutlined style={{ marginRight: 4 }} />
-            {error}
-          </span>
         ) : isLarge ? (
           <span style={{ color: '#cca700' }}>
             <WarningOutlined style={{ marginRight: 4 }} />
+            {error}
+          </span>
+        ) : error ? (
+          <span style={{ color: '#f14c4c' }}>
+            <CloseCircleOutlined style={{ marginRight: 4 }} />
             {error}
           </span>
         ) : contentLength > 0 ? (

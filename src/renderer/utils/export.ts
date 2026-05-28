@@ -1,9 +1,9 @@
 import { toPng } from 'html-to-image'
 import jsPDF from 'jspdf'
 
-export async function exportToPng(element: HTMLElement, filename: string = 'json-tree.png'): Promise<void> {
+export async function exportToPng(element: HTMLElement, filename: string = 'json-tree.png', isDark: boolean = true): Promise<void> {
   const dataUrl = await toPng(element, {
-    backgroundColor: '#1e1e1e',
+    backgroundColor: isDark ? '#1e1e1e' : '#ffffff',
     pixelRatio: 2
   })
   const link = document.createElement('a')
@@ -12,9 +12,9 @@ export async function exportToPng(element: HTMLElement, filename: string = 'json
   link.click()
 }
 
-export async function exportToPdf(element: HTMLElement, filename: string = 'json-tree.pdf'): Promise<void> {
+export async function exportToPdf(element: HTMLElement, filename: string = 'json-tree.pdf', isDark: boolean = true): Promise<void> {
   const dataUrl = await toPng(element, {
-    backgroundColor: '#1e1e1e',
+    backgroundColor: isDark ? '#1e1e1e' : '#ffffff',
     pixelRatio: 2
   })
   const pdf = new jsPDF({

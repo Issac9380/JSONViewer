@@ -61,7 +61,7 @@ export default function MainLayout({
           cursor: 'col-resize',
           background: 'var(--border-color, #30363d)',
           flexShrink: 0,
-          transition: dragging.current ? 'none' : 'background 0.2s'
+          transition: 'background 0.2s'
         }}
         onMouseEnter={(e) => {
           (e.target as HTMLElement).style.background = '#1677ff'
