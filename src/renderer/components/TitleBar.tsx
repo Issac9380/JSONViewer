@@ -20,10 +20,10 @@ export default function TitleBar() {
         color: 'var(--titlebar-color, #ccc)',
         WebkitAppRegion: 'drag',
         flexShrink: 0
-      }}
+      } as React.CSSProperties}
     >
       <span style={{ fontSize: 13, fontWeight: 500 }}>JSON Viewer</span>
-      <div style={{ WebkitAppRegion: 'no-drag', display: 'flex', gap: 2 }}>
+      <div style={{ WebkitAppRegion: 'no-drag', display: 'flex', gap: 2 } as React.CSSProperties}>
         <button
           onClick={() => window.electronAPI.minimizeWindow()}
           style={{
