@@ -8,7 +8,7 @@ interface ElectronAPI {
   saveFile: (content: string) => Promise<boolean>
   readDroppedFile: (filePath: string) => Promise<{ content: string; filePath: string } | null>
   getWindowState: () => Promise<boolean>
-  onWindowStateChanged: (callback: (maximized: boolean) => void) => void
+  onWindowStateChanged: (callback: (maximized: boolean) => void) => () => void
 }
 
 interface Window {

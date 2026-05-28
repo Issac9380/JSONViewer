@@ -1,6 +1,6 @@
-import { app, BrowserWindow, ipcMain, dialog, shell } from 'electron'
+import { app, BrowserWindow, ipcMain, dialog } from 'electron'
 import { join } from 'path'
-import { readFile } from 'fs/promises'
+import { readFile, writeFile } from 'fs/promises'
 
 let mainWindow: BrowserWindow | null = null
 
@@ -14,7 +14,8 @@ function createWindow(): void {
     frame: false,
     webPreferences: {
       preload: join(__dirname, '../preload/index.js'),
-      sandbox: false
+      sandbox: true,
+      contextIsolation: true
     }
   })
 
@@ -49,24 +50,33 @@ ipcMain.handle('maximize-window', () => {
 ipcMain.handle('close-window', () => mainWindow?.close())
 
 ipcMain.handle('open-file', async () => {
-  const result = await dialog.showOpenDialog(mainWindow!, {
+  if (!mainWindow) return null
+  const result = await dialog.showOpenDialog(mainWindow, {
     filters: [{ name: 'JSON / Text', extensions: ['json', 'txt'] }],
     properties: ['openFile']
   })
   if (result.canceled || result.filePaths.length === 0) return null
-  const content = await readFile(result.filePaths[0], 'utf-8')
-  return { content, filePath: result.filePaths[0] }
+  try {
+    const content = await readFile(result.filePaths[0], 'utf-8')
+    return { content, filePath: result.filePaths[0] }
+  } catch {
+    return null
+  }
 })
 
 ipcMain.handle('save-file', async (_event, content: string) => {
-  const result = await dialog.showSaveDialog(mainWindow!, {
+  if (!mainWindow) return false
+  const result = await dialog.showSaveDialog(mainWindow, {
     filters: [{ name: 'JSON', extensions: ['json'] }],
     defaultPath: 'output.json'
   })
   if (result.canceled || !result.filePath) return false
-  const { writeFile } = await import('fs/promises')
-  await writeFile(result.filePath, content, 'utf-8')
-  return true
+  try {
+    await writeFile(result.filePath, content, 'utf-8')
+    return true
+  } catch {
+    return false
+  }
 })
 
 ipcMain.handle('read-dropped-file', async (_event, filePath: string) => {

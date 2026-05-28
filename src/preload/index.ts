@@ -9,6 +9,8 @@ contextBridge.exposeInMainWorld('electronAPI', {
   readDroppedFile: (filePath: string) => ipcRenderer.invoke('read-dropped-file', filePath),
   getWindowState: () => ipcRenderer.invoke('get-window-state'),
   onWindowStateChanged: (callback: (maximized: boolean) => void) => {
-    ipcRenderer.on('window-state-changed', (_event, maximized) => callback(maximized))
+    const handler = (_event: unknown, maximized: boolean) => callback(maximized)
+    ipcRenderer.on('window-state-changed', handler)
+    return () => { ipcRenderer.removeListener('window-state-changed', handler) }
   }
 })
