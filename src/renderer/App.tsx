@@ -94,7 +94,7 @@ export default function App() {
 
   const handleTreeSelect = useCallback((path: string) => {
     setSelectedPath(path)
-    if (state.parsed) {
+    if (state.parsed !== null && state.parsed !== undefined) {
       setSelectedValue(getValueByPath(state.parsed, path))
     }
   }, [state.parsed])
