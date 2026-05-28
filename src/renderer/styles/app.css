@@ -14,3 +14,37 @@ html, body, #root {
   display: flex;
   flex-direction: column;
 }
+
+/* Ant Design Tree 在深色模式下的样式微调 */
+.ant-tree {
+  background: transparent !important;
+  color: inherit !important;
+}
+
+.ant-tree .ant-tree-node-content-wrapper {
+  font-family: 'Cascadia Code', 'Fira Code', 'Consolas', monospace !important;
+  font-size: 13px;
+}
+
+.ant-tree .ant-tree-node-content-wrapper:hover {
+  background: rgba(255, 255, 255, 0.05) !important;
+}
+
+/* 滚动条样式 */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.4);
+}
