@@ -1,0 +1,83 @@
+import { app, BrowserWindow, ipcMain, dialog, shell } from 'electron'
+import { join } from 'path'
+import { readFile } from 'fs/promises'
+
+let mainWindow: BrowserWindow | null = null
+
+function createWindow(): void {
+  mainWindow = new BrowserWindow({
+    width: 1200,
+    height: 800,
+    minWidth: 800,
+    minHeight: 600,
+    title: 'JSON Viewer',
+    frame: false,
+    webPreferences: {
+      preload: join(__dirname, '../preload/index.js'),
+      sandbox: false
+    }
+  })
+
+  mainWindow.on('ready-to-show', () => {
+    mainWindow?.show()
+  })
+
+  mainWindow.on('maximize', () => mainWindow?.webContents.send('window-state-changed', true))
+  mainWindow.on('unmaximize', () => mainWindow?.webContents.send('window-state-changed', false))
+
+  if (process.env.ELECTRON_RENDERER_URL) {
+    mainWindow.loadURL(process.env.ELECTRON_RENDERER_URL)
+  } else {
+    mainWindow.loadFile(join(__dirname, '../renderer/index.html'))
+  }
+}
+
+app.whenReady().then(createWindow)
+
+app.on('window-all-closed', () => {
+  app.quit()
+})
+
+ipcMain.handle('minimize-window', () => mainWindow?.minimize())
+ipcMain.handle('maximize-window', () => {
+  if (mainWindow?.isMaximized()) {
+    mainWindow.unmaximize()
+  } else {
+    mainWindow?.maximize()
+  }
+})
+ipcMain.handle('close-window', () => mainWindow?.close())
+
+ipcMain.handle('open-file', async () => {
+  const result = await dialog.showOpenDialog(mainWindow!, {
+    filters: [{ name: 'JSON / Text', extensions: ['json', 'txt'] }],
+    properties: ['openFile']
+  })
+  if (result.canceled || result.filePaths.length === 0) return null
+  const content = await readFile(result.filePaths[0], 'utf-8')
+  return { content, filePath: result.filePaths[0] }
+})
+
+ipcMain.handle('save-file', async (_event, content: string) => {
+  const result = await dialog.showSaveDialog(mainWindow!, {
+    filters: [{ name: 'JSON', extensions: ['json'] }],
+    defaultPath: 'output.json'
+  })
+  if (result.canceled || !result.filePath) return false
+  const { writeFile } = await import('fs/promises')
+  await writeFile(result.filePath, content, 'utf-8')
+  return true
+})
+
+ipcMain.handle('read-dropped-file', async (_event, filePath: string) => {
+  try {
+    const content = await readFile(filePath, 'utf-8')
+    return { content, filePath }
+  } catch {
+    return null
+  }
+})
+
+ipcMain.handle('get-window-state', () => {
+  return mainWindow?.isMaximized() ?? false
+})
