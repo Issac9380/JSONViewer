@@ -11,9 +11,6 @@ files:
   - '!{tsconfig.json,tsconfig.node.json,tsconfig.web.json}'
 win:
   target:
-    - target: nsis
+    - target: zip
       arch: [x64]
-  artifactName: ${name}-${version}-setup.${ext}
-nsis:
-  oneClick: false
-  allowToChangeInstallationDirectory: true
+  artifactName: ${name}-${version}-portable.${ext}

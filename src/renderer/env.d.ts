@@ -1,5 +1,12 @@
 /// <reference types="vite/client" />
 
+declare module '*?worker' {
+  const workerConstructor: {
+    new (): Worker
+  }
+  export default workerConstructor
+}
+
 interface ElectronAPI {
   minimizeWindow: () => Promise<void>
   maximizeWindow: () => Promise<void>
@@ -12,4 +19,5 @@ interface ElectronAPI {
 
 interface Window {
   electronAPI: ElectronAPI
+  MonacoEnvironment?: MonacoEnvironment
 }

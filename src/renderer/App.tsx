@@ -112,6 +112,7 @@ export default function App() {
           display: 'flex',
           flexDirection: 'column',
           height: '100%',
+          overflow: 'hidden',
           background: isDark ? '#1e1e1e' : '#ffffff',
           color: isDark ? '#cccccc' : '#333333',
           ['--border-color' as string]: isDark ? '#30363d' : '#e0e0e0',

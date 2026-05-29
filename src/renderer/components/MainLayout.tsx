@@ -50,8 +50,8 @@ export default function MainLayout({
   }, [minRatio, maxRatio])
 
   return (
-    <div ref={containerRef} style={{ display: 'flex', flex: 1, overflow: 'hidden' }}>
-      <div style={{ width: `${ratio * 100}%`, minWidth: 0, overflow: 'hidden' }}>
+    <div ref={containerRef} style={{ display: 'flex', flex: 1, overflow: 'hidden', minHeight: 0 }}>
+      <div style={{ width: `${ratio * 100}%`, height: '100%', minWidth: 0, overflow: 'hidden' }}>
         {left}
       </div>
       <div
@@ -72,7 +72,7 @@ export default function MainLayout({
           }
         }}
       />
-      <div style={{ flex: 1, minWidth: 0, overflow: 'hidden' }}>
+      <div style={{ flex: 1, height: '100%', minWidth: 0, overflow: 'hidden' }}>
         {right}
       </div>
     </div>
