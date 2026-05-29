@@ -1,0 +1,215 @@
+{
+  "app": "JSON Viewer",
+  "version": "1.0.0",
+  "metadata": {
+    "author": "JSON Viewer Team",
+    "license": "MIT",
+    "repository": "https://github.com/example/json-viewer",
+    "keywords": ["json", "viewer", "formatter", "desktop", "electron"],
+    "created": "2026-05-29T08:00:00.000Z",
+    "stats": {
+      "downloads": 12580,
+      "stars": 342,
+      "rating": 4.8
+    }
+  },
+  "user": {
+    "id": "usr_a1b2c3d4",
+    "profile": {
+      "name": "张三",
+      "email": "zhangsan@example.com",
+      "avatar": null,
+      "bio": "全栈工程师 | 开源爱好者\n热爱编程，喜欢探索新技术 🚀",
+      "social": {
+        "github": "https://github.com/zhangsan",
+        "twitter": null,
+        "blog": "https://zhangsan.dev"
+      }
+    },
+    "roles": ["admin", "developer", "reviewer"],
+    "permissions": {
+      "read": true,
+      "write": true,
+      "delete": false,
+      "manage_users": false
+    },
+    "settings": {
+      "theme": "auto",
+      "language": "zh-CN",
+      "fontSize": 14,
+      "tabSize": 2,
+      "autoFormat": true,
+      "notifications": {
+        "email": true,
+        "desktop": true,
+        "sound": false
+      }
+    },
+    "lastLogin": "2026-05-29T10:30:00+08:00",
+    "loginCount": 1024
+  },
+  "data": {
+    "projects": [
+      {
+        "id": 1,
+        "name": "JSON Viewer",
+        "description": "A desktop JSON viewing tool",
+        "status": "active",
+        "progress": 0.95,
+        "tags": ["json", "electron", "react", "typescript"],
+        "team": [
+          {"name": "李四", "role": "frontend", "active": true},
+          {"name": "王五", "role": "backend", "active": true},
+          {"name": "赵六", "role": "designer", "active": false}
+        ],
+        "config": {
+          "buildTool": "electron-vite",
+          "ui": "antd",
+          "editor": "monaco",
+          "testFramework": null,
+          "environments": {
+            "dev": {"url": "http://localhost:5173", "debug": true},
+            "staging": {"url": "https://staging.example.com", "debug": true},
+            "production": {"url": "https://app.example.com", "debug": false}
+          }
+        },
+        "commits": [
+          {"hash": "abc1234", "message": "feat: initial commit", "date": "2026-05-20"},
+          {"hash": "def5678", "message": "feat: add JSON tree view", "date": "2026-05-22"},
+          {"hash": "ghi9012", "message": "fix: resolve memory leak in TitleBar", "date": "2026-05-25"},
+          {"hash": "jkl3456", "message": "style: add dark theme support", "date": "2026-05-27"},
+          {"hash": "mno7890", "message": "chore: upgrade electron to v30", "date": "2026-05-28"}
+        ],
+        "metrics": {
+          "linesOfCode": 2847,
+          "files": 18,
+          "components": 7,
+          "hooks": 2,
+          "utils": 2,
+          "coverage": 0.0
+        }
+      },
+      {
+        "id": 2,
+        "name": "API Gateway",
+        "description": "Microservices API gateway with rate limiting",
+        "status": "active",
+        "progress": 0.72,
+        "tags": ["go", "microservices", "docker", "kubernetes"],
+        "team": [
+          {"name": "孙七", "role": "lead", "active": true},
+          {"name": "周八", "role": "developer", "active": true}
+        ],
+        "config": {
+          "port": 8080,
+          "timeout": 30000,
+          "maxConnections": 1000,
+          "rateLimit": {
+            "enabled": true,
+            "requestsPerMinute": 60,
+            "burstSize": 10
+          },
+          "cors": {
+            "allowedOrigins": ["*"],
+            "allowedMethods": ["GET", "POST", "PUT", "DELETE"],
+            "allowedHeaders": ["Content-Type", "Authorization"],
+            "maxAge": 86400
+          }
+        },
+        "endpoints": [
+          {"path": "/api/v1/users", "method": "GET", "auth": true, "cache": 60},
+          {"path": "/api/v1/users/:id", "method": "GET", "auth": true, "cache": 30},
+          {"path": "/api/v1/users", "method": "POST", "auth": true, "cache": 0},
+          {"path": "/api/v1/health", "method": "GET", "auth": false, "cache": 0}
+        ]
+      },
+      {
+        "id": 3,
+        "name": "Legacy Dashboard",
+        "description": "Old admin panel — deprecated",
+        "status": "archived",
+        "progress": 1.0,
+        "tags": ["jquery", "php", "legacy"],
+        "team": [],
+        "config": null,
+        "deprecated": true,
+        "migratedTo": 2
+      }
+    ],
+    "pagination": {
+      "page": 1,
+      "pageSize": 10,
+      "total": 3,
+      "hasMore": false
+    }
+  },
+  "schema": {
+    "$id": "https://example.com/schemas/project.json",
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "type": "object",
+    "required": ["id", "name", "status"],
+    "properties": {
+      "id": {"type": "integer", "minimum": 1},
+      "name": {"type": "string", "minLength": 1, "maxLength": 100},
+      "status": {"type": "string", "enum": ["active", "inactive", "archived"]},
+      "progress": {"type": "number", "minimum": 0, "maximum": 1}
+    }
+  },
+  "logs": {
+    "levels": ["debug", "info", "warn", "error", "fatal"],
+    "entries": [
+      {"level": "info", "message": "Application started", "timestamp": 1716969600},
+      {"level": "debug", "message": "Loading configuration from: /etc/app/config.json", "timestamp": 1716969601},
+      {"level": "warn", "message": "Deprecated API version v1 detected, please migrate to v2", "timestamp": 1716969610},
+      {"level": "error", "message": "Connection refused to database at 10.0.0.1:5432", "timestamp": 1716969700, "stack": "Error: connect ECONNREFUSED 10.0.0.1:5432\n    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1494:16)"}
+    ]
+  },
+  "unicode": {
+    "emoji": "😀🎉💻🔥✅❌⚠️📝🔍🚀",
+    "chinese": "这是一段中文测试文本，包含标点符号：，。！？",
+    "japanese": "これは日本語のテストです",
+    "korean": "이것은 한국어 테스트입니다",
+    "specialChars": "\\ \" \/ \b \f \n \r \t A",
+    "mathSymbols": "∀ ∃ ∄ ∴ ⊂ ⊃ ∪ ∩ √ ∞ ≈ ≠ ≤ ≥"
+  },
+  "values": {
+    "zero": 0,
+    "negative": -42,
+    "maxInt": 9007199254740991,
+    "pi": 3.141592653589793,
+    "scientificNotation": 1.5e10,
+    "negativeScientific": 2.5e-5,
+    "trueValue": true,
+    "falseValue": false,
+    "nullValue": null,
+    "emptyString": "",
+    "emptyArray": [],
+    "emptyObject": {},
+    "whitespaceString": "  \t \n  ",
+    "longText": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+    "url": "https://www.example.com/path/to/resource?param1=value1&param2=value%20with%20spaces#section",
+    "regex": "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$",
+    "hexColor": "#FF5733",
+    "base64Data": "SGVsbG8gV29ybGQhIFRoaXMgaXMgYSB0ZXN0IG9mIEpTT04gVmlld2VyLg=="
+  },
+  "nested": {
+    "level1": {
+      "name": "L1",
+      "level2": {
+        "name": "L2",
+        "level3": {
+          "name": "L3",
+          "level4": {
+            "name": "L4",
+            "level5": {
+              "name": "L5 — deepest level",
+              "message": "You made it to the bottom! 🏆",
+              "answer": 42
+            }
+          }
+        }
+      }
+    }
+  },
+  "largeArray": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50]
+}

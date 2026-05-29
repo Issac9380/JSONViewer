@@ -1,23 +1,26 @@
 import type { DataNode } from 'antd/es/tree'
 
 export function jsonToTree(key: string, value: unknown, parentPath: string = '$'): DataNode {
-  const currentPath = parentPath === '$' ? '$' : `${parentPath}.${key}`
+  const isNumericKey = /^\d+$/.test(key)
+  const displayKey = isNumericKey ? `[${key}]` : key
+  const pathKey = isNumericKey ? `[${key}]` : key
+  const currentPath = parentPath === '$' ? `$.${pathKey}` : `${parentPath}.${pathKey}`
 
   if (value === null) {
-    return { title: `${key}: null`, key: currentPath, isLeaf: true }
+    return { title: `${displayKey}: null`, key: currentPath, isLeaf: true }
   }
 
   if (typeof value === 'boolean') {
-    return { title: `${key}: ${value}`, key: currentPath, isLeaf: true }
+    return { title: `${displayKey}: ${value}`, key: currentPath, isLeaf: true }
   }
 
   if (typeof value === 'number') {
-    return { title: `${key}: ${value}`, key: currentPath, isLeaf: true }
+    return { title: `${displayKey}: ${value}`, key: currentPath, isLeaf: true }
   }
 
   if (typeof value === 'string') {
     const display = value.length > 80 ? `${value.slice(0, 80)}…` : value
-    return { title: `${key}: "${display}"`, key: currentPath, isLeaf: true }
+    return { title: `${displayKey}: "${display}"`, key: currentPath, isLeaf: true }
   }
 
   if (Array.isArray(value)) {
@@ -25,7 +28,7 @@ export function jsonToTree(key: string, value: unknown, parentPath: string = '$'
       jsonToTree(String(index), item, currentPath)
     )
     return {
-      title: `${key}: [${value.length} item${value.length !== 1 ? 's' : ''}]`,
+      title: `${displayKey}: [${value.length} item${value.length !== 1 ? 's' : ''}]`,
       key: currentPath,
       children
     }
@@ -37,13 +40,46 @@ export function jsonToTree(key: string, value: unknown, parentPath: string = '$'
     )
     const count = Object.keys(value as object).length
     return {
-      title: `${key}: {${count} key${count !== 1 ? 's' : ''}}`,
+      title: `${displayKey}: {${count} key${count !== 1 ? 's' : ''}}`,
       key: currentPath,
       children
     }
   }
 
-  return { title: `${key}: ${String(value)}`, key: currentPath, isLeaf: true }
+  return { title: `${displayKey}: ${String(value)}`, key: currentPath, isLeaf: true }
+}
+
+function parsePath(path: string): (string | number)[] {
+  if (path === '$') return []
+  // Remove leading $. and split by . or [index]
+  const parts = path.substring(2).match(/[^.\[\]]+|\[\d+\]/g) || []
+  return parts.map(part => {
+    if (part.startsWith('[')) {
+      return Number.parseInt(part.slice(1, -1), 10)
+    }
+    return part
+  })
+}
+
+export function getValueByPath(parsed: unknown, path: string): string {
+  if (path === '$') {
+    if (typeof parsed === 'string') return `"${parsed}"`
+    return JSON.stringify(parsed)
+  }
+  const parts = parsePath(path)
+  let current: unknown = parsed
+  for (const part of parts) {
+    if (current === null || current === undefined) return 'undefined'
+    if (Array.isArray(current)) {
+      current = current[Number(part)]
+    } else if (typeof current === 'object') {
+      current = (current as Record<string, unknown>)[String(part)]
+    }
+  }
+  if (current === null) return 'null'
+  if (current === undefined) return 'undefined'
+  if (typeof current === 'string') return `"${current}"`
+  return JSON.stringify(current)
 }
 
 export function buildTreeData(parsed: unknown): DataNode[] {
@@ -62,25 +98,4 @@ export function buildTreeData(parsed: unknown): DataNode[] {
   }
 
   return [jsonToTree('root', parsed, '$')]
-}
-
-export function getValueByPath(parsed: unknown, path: string): string {
-  if (path === '$') {
-    if (typeof parsed === 'string') return `"${parsed}"`
-    return JSON.stringify(parsed)
-  }
-  const parts = path.split('.').slice(1)
-  let current: unknown = parsed
-  for (const part of parts) {
-    if (current === null || current === undefined) return 'undefined'
-    if (Array.isArray(current)) {
-      current = current[Number(part)]
-    } else if (typeof current === 'object') {
-      current = (current as Record<string, unknown>)[part]
-    }
-  }
-  if (current === null) return 'null'
-  if (current === undefined) return 'undefined'
-  if (typeof current === 'string') return `"${current}"`
-  return JSON.stringify(current)
 }
