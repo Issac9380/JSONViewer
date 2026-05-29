@@ -1,9 +1,19 @@
+import React from 'react'
 import type { DataNode } from 'antd/es/tree'
 
 export interface SearchMatch {
   key: string
   title: string
   path: string
+}
+
+function nodeTitleToString(title: React.ReactNode): string {
+  if (typeof title === 'string') return title
+  if (Array.isArray(title)) return title.map(nodeTitleToString).join('')
+  if (React.isValidElement(title)) {
+    return nodeTitleToString(title.props.children)
+  }
+  return String(title)
 }
 
 export function searchTree(
@@ -17,10 +27,9 @@ export function searchTree(
   const search = (nodes: DataNode[], currentPath: string) => {
     for (const node of nodes) {
       const key = node.key as string
-      const title = node.title as string
+      const title = nodeTitleToString(node.title)
       const fullPath = currentPath ? `${currentPath}.${title.split(':')[0].trim()}` : title.split(':')[0].trim()
 
-      // 检查当前节点是否匹配
       if (title.toLowerCase().includes(lowerSearch)) {
         matches.push({
           key,
@@ -29,7 +38,6 @@ export function searchTree(
         })
       }
 
-      // 递归搜索子节点
       if (node.children && node.children.length > 0) {
         search(node.children, fullPath)
       }
@@ -49,14 +57,12 @@ export function expandKeysToMatch(treeData: DataNode[], searchTerm: string): str
 
     for (const node of nodes) {
       const key = node.key as string
-      const title = node.title as string
+      const title = nodeTitleToString(node.title)
 
-      // 检查当前节点是否匹配
       if (title.toLowerCase().includes(lowerSearch)) {
         hasMatch = true
       }
 
-      // 递归检查子节点
       if (node.children && node.children.length > 0) {
         const childHasMatch = findPaths(node.children, key)
         if (childHasMatch) {
@@ -73,10 +79,21 @@ export function expandKeysToMatch(treeData: DataNode[], searchTerm: string): str
   return Array.from(keysToExpand)
 }
 
-export function highlightText(text: string, searchTerm: string): React.ReactNode {
+export function highlightText(text: React.ReactNode, searchTerm: string): React.ReactNode {
   if (!searchTerm) return text
 
-  const parts = text.split(new RegExp(`(${escapeRegex(searchTerm)})`, 'gi'))
+  if (React.isValidElement(text)) {
+    return React.cloneElement(text, {}, highlightText(text.props.children, searchTerm))
+  }
+
+  if (Array.isArray(text)) {
+    return text.map((item, index) => (
+      <React.Fragment key={index}>{highlightText(item, searchTerm)}</React.Fragment>
+    ))
+  }
+
+  const strText = String(text)
+  const parts = strText.split(new RegExp(`(${escapeRegex(searchTerm)})`, 'gi'))
 
   return parts.map((part, index) =>
     part.toLowerCase() === searchTerm.toLowerCase() ? (

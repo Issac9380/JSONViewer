@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { buildTreeData, getValueByPath } from '../../src/renderer/utils/jsonToTree'
+import { buildTreeData, getValueByPath } from '../../src/renderer/utils/jsonToTree.tsx'
 
 describe('JSON Processing', () => {
   it('should parse simple object', () => {

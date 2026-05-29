@@ -73,7 +73,7 @@ export default function TreePanel({ treeData, onSelect, isValid, hasContent, tre
     if (!searchTerm) return treeData
 
     const highlightNode = (node: DataNode): DataNode => {
-      const title = node.title as string
+      const title = node.title as React.ReactNode
       const highlightedTitle = searchTerm ? highlightText(title, searchTerm) : title
 
       return {

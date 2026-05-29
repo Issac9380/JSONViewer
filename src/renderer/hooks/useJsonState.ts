@@ -1,6 +1,6 @@
 import { useState, useCallback, useRef } from 'react'
 import type { DataNode } from 'antd/es/tree'
-import { buildTreeData } from '@/utils/jsonToTree'
+import { buildTreeData } from '@/utils/jsonToTree.tsx'
 
 const MAX_AUTO_PARSE_SIZE = 10 * 1024 * 1024 // 10MB
 

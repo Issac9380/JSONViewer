@@ -8,7 +8,7 @@ import TreePanel from '@/components/TreePanel'
 import StatusBar from '@/components/StatusBar'
 import { useJsonState } from '@/hooks/useJsonState'
 import { useTheme } from '@/hooks/useTheme'
-import { getValueByPath } from '@/utils/jsonToTree'
+import { getValueByPath } from '@/utils/jsonToTree.tsx'
 import { exportToPng, exportToPdf } from '@/utils/export'
 
 export default function App() {
