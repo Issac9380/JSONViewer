@@ -73,24 +73,32 @@ export default function App() {
   }, [state.formatted, state.raw, messageApi])
 
   const handleExportPng = useCallback(async () => {
-    if (!treeRef.current) return
+    if (!treeRef.current) {
+      messageApi.error('树形视图未找到')
+      return
+    }
     try {
       await exportToPng(treeRef.current, 'json-tree.png', isDark)
       messageApi.success('PNG 已导出')
-    } catch {
-      messageApi.error('导出 PNG 失败')
+    } catch (e) {
+      console.error('PNG export error:', e)
+      messageApi.error(`导出 PNG 失败: ${e instanceof Error ? e.message : '未知错误'}`)
     }
-  }, [messageApi])
+  }, [messageApi, isDark])
 
   const handleExportPdf = useCallback(async () => {
-    if (!treeRef.current) return
+    if (!treeRef.current) {
+      messageApi.error('树形视图未找到')
+      return
+    }
     try {
       await exportToPdf(treeRef.current, 'json-tree.pdf', isDark)
       messageApi.success('PDF 已导出')
-    } catch {
-      messageApi.error('导出 PDF 失败')
+    } catch (e) {
+      console.error('PDF export error:', e)
+      messageApi.error(`导出 PDF 失败: ${e instanceof Error ? e.message : '未知错误'}`)
     }
-  }, [messageApi])
+  }, [messageApi, isDark])
 
   const handleTreeSelect = useCallback((path: string) => {
     setSelectedPath(path)
