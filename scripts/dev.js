@@ -5,9 +5,9 @@ delete process.env.ELECTRON_RUN_AS_NODE;
 const path = require('path');
 const { spawn } = require('child_process');
 
-// Use electron-vite CLI directly — npx/.cmd won't resolve in spawn on Windows.
-const cli = path.join(__dirname, '..', 'node_modules', '.bin', 'electron-vite');
-const child = spawn(process.platform === 'win32' ? cli + '.cmd' : cli, ['dev'], {
+// Spawn electron-vite CLI via node directly — avoids .cmd/shell issues on Windows.
+const cli = path.join(__dirname, '..', 'node_modules', 'electron-vite', 'bin', 'electron-vite.js');
+const child = spawn(process.execPath, [cli, 'dev'], {
   stdio: 'inherit',
   env: process.env
 });
