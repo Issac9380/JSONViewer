@@ -24,7 +24,7 @@ export default function EditorPanel({ value, onChange, isDark, onFormat }: Edito
   }, [onFormat])
 
   return (
-    <div style={{ flex: 1, minHeight: 0 }}>
+    <div style={{ flex: 1, minHeight: 0, height: '100%' }}>
       <Editor
         height="100%"
         language="json"
