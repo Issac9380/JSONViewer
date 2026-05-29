@@ -88,7 +88,8 @@ export default function TreePanel({ treeData, onSelect, isValid, hasContent, tre
         style={{
           flex: 1,
           overflow: 'auto',
-          padding: '8px 4px'
+          padding: '8px 4px',
+          minHeight: 0
         }}
       >
         {hasContent && isValid && treeData.length > 0 ? (
