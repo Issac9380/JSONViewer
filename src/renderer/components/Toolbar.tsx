@@ -1,4 +1,4 @@
-import { Button, Space, Dropdown } from 'antd'
+import { Button, Space, Dropdown, Input } from 'antd'
 import type { MenuProps } from 'antd'
 import {
   FormatPainterOutlined,
@@ -7,7 +7,8 @@ import {
   SunOutlined,
   MoonOutlined,
   FileAddOutlined,
-  SaveOutlined
+  SaveOutlined,
+  SearchOutlined
 } from '@ant-design/icons'
 
 interface ToolbarProps {
@@ -21,6 +22,8 @@ interface ToolbarProps {
   onToggleTheme: () => void
   canFormat: boolean
   hasContent: boolean
+  searchTerm?: string
+  onSearchTermChange?: (term: string) => void
 }
 
 export default function Toolbar({
@@ -33,7 +36,9 @@ export default function Toolbar({
   isDark,
   onToggleTheme,
   canFormat,
-  hasContent
+  hasContent,
+  searchTerm = '',
+  onSearchTermChange
 }: ToolbarProps) {
   const exportItems: MenuProps['items'] = [
     { key: 'png', label: '导出树形视图为 PNG', icon: <ExportOutlined />, onClick: onExportPng },
@@ -86,6 +91,19 @@ export default function Toolbar({
         </Dropdown>
       </Space>
       <div style={{ flex: 1 }} />
+      <Input
+        prefix={<SearchOutlined />}
+        placeholder="搜索..."
+        value={searchTerm}
+        onChange={(e) => onSearchTermChange?.(e.target.value)}
+        style={{
+          width: 180,
+          background: isDark ? '#1e1e1e' : '#ffffff',
+          borderColor: isDark ? '#30363d' : '#e0e0e0',
+          color: isDark ? '#cccccc' : '#333333'
+        }}
+        allowClear
+      />
       <Button
         icon={isDark ? <SunOutlined /> : <MoonOutlined />}
         size="small"

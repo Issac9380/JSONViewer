@@ -17,6 +17,7 @@ export default function App() {
   const treeRef = useRef<HTMLDivElement | null>(null)
   const [selectedPath, setSelectedPath] = useState<string | null>(null)
   const [selectedValue, setSelectedValue] = useState<string | null>(null)
+  const [searchTerm, setSearchTerm] = useState('')
   const [messageApi, contextHolder] = message.useMessage()
 
   const isDark = mode === 'dark'
@@ -143,6 +144,8 @@ export default function App() {
             onToggleTheme={toggleTheme}
             canFormat={state.raw.length > 0}
             hasContent={state.raw.length > 0}
+            searchTerm={searchTerm}
+            onSearchTermChange={setSearchTerm}
           />
           <MainLayout
             left={
@@ -160,6 +163,7 @@ export default function App() {
                 isValid={state.isValid}
                 hasContent={state.raw.length > 0}
                 treeRef={treeRef}
+                searchTerm={searchTerm}
               />
             }
           />

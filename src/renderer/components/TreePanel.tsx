@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useMemo, useEffect } from 'react'
 import { Tree, Button, Space, Empty } from 'antd'
 import {
   ExpandAltOutlined,
@@ -6,6 +6,7 @@ import {
   VerticalAlignBottomOutlined
 } from '@ant-design/icons'
 import type { DataNode } from 'antd/es/tree'
+import { searchTree, expandKeysToMatch, highlightText } from '@/utils/search'
 
 interface TreePanelProps {
   treeData: DataNode[]
@@ -13,10 +14,19 @@ interface TreePanelProps {
   isValid: boolean
   hasContent: boolean
   treeRef: React.MutableRefObject<HTMLDivElement | null>
+  searchTerm?: string
 }
 
-export default function TreePanel({ treeData, onSelect, isValid, hasContent, treeRef }: TreePanelProps) {
+export default function TreePanel({ treeData, onSelect, isValid, hasContent, treeRef, searchTerm = '' }: TreePanelProps) {
   const [expandedKeys, setExpandedKeys] = useState<string[]>([])
+
+  // 根据搜索词自动展开包含匹配项的节点
+  useEffect(() => {
+    if (searchTerm) {
+      const keys = expandKeysToMatch(treeData, searchTerm)
+      setExpandedKeys(keys)
+    }
+  }, [searchTerm, treeData])
 
   const getKeysUpToLevel = useCallback((nodes: DataNode[], maxLevel: number): string[] => {
     const keys: string[] = []
@@ -58,6 +68,24 @@ export default function TreePanel({ treeData, onSelect, isValid, hasContent, tre
     }
   }, [onSelect])
 
+  // 高亮树节点的标题
+  const highlightedTreeData = useMemo(() => {
+    if (!searchTerm) return treeData
+
+    const highlightNode = (node: DataNode): DataNode => {
+      const title = node.title as string
+      const highlightedTitle = searchTerm ? highlightText(title, searchTerm) : title
+
+      return {
+        ...node,
+        title: highlightedTitle,
+        children: node.children?.map(highlightNode)
+      }
+    }
+
+    return treeData.map(highlightNode)
+  }, [treeData, searchTerm])
+
   return (
     <div style={{ flex: 1, minHeight: 0, display: 'flex', flexDirection: 'column' }}>
       <div style={{
@@ -95,9 +123,9 @@ export default function TreePanel({ treeData, onSelect, isValid, hasContent, tre
           flexDirection: 'column'
         }}
       >
-        {hasContent && isValid && treeData.length > 0 ? (
+        {hasContent && isValid && highlightedTreeData.length > 0 ? (
           <Tree
-            treeData={treeData}
+            treeData={highlightedTreeData}
             showLine={{ showLeafIcon: false }}
             showIcon={false}
             expandedKeys={expandedKeys}
