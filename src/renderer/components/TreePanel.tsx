@@ -89,7 +89,10 @@ export default function TreePanel({ treeData, onSelect, isValid, hasContent, tre
           flex: 1,
           overflow: 'auto',
           padding: '8px 4px',
-          minHeight: 0
+          minHeight: 0,
+          height: '100%',
+          display: 'flex',
+          flexDirection: 'column'
         }}
       >
         {hasContent && isValid && treeData.length > 0 ? (
@@ -102,7 +105,7 @@ export default function TreePanel({ treeData, onSelect, isValid, hasContent, tre
             onSelect={handleSelect}
             defaultExpandAll={false}
             blockNode
-            style={{ background: 'transparent', color: 'inherit' }}
+            style={{ background: 'transparent', color: 'inherit', minHeight: '100%' }}
           />
         ) : (
           <Empty
