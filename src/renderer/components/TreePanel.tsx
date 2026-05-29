@@ -6,7 +6,7 @@ import {
   VerticalAlignBottomOutlined
 } from '@ant-design/icons'
 import type { DataNode } from 'antd/es/tree'
-import { searchTree, expandKeysToMatch, highlightText } from '@/utils/search'
+import { searchTree, expandKeysToMatch, highlightText } from '@/utils/search.tsx'
 
 interface TreePanelProps {
   treeData: DataNode[]
