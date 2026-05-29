@@ -106,12 +106,13 @@ export default function App() {
         token: { colorPrimary: '#1677ff', borderRadius: 6 }
       }}
     >
-      <AntApp>
+      <AntApp style={{ height: '100%', minHeight: '100%', display: 'flex', flexDirection: 'column' }}>
         {contextHolder}
         <div style={{
           display: 'flex',
           flexDirection: 'column',
           height: '100%',
+          minHeight: '100%',
           overflow: 'hidden',
           background: isDark ? '#1e1e1e' : '#ffffff',
           color: isDark ? '#cccccc' : '#333333',
