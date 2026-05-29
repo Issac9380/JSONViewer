@@ -13,6 +13,7 @@ function createWindow(): void {
     minHeight: 600,
     title: 'JSON Viewer',
     frame: false,
+    backgroundColor: '#1e1e1e',
     webPreferences: {
       preload: join(__dirname, '../preload/index.js'),
       sandbox: true,
