@@ -59,7 +59,7 @@ export default function TreePanel({ treeData, onSelect, isValid, hasContent, tre
   }, [onSelect])
 
   return (
-    <div style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+    <div style={{ flex: 1, minHeight: 0, display: 'flex', flexDirection: 'column' }}>
       <div style={{
         padding: '8px 12px',
         borderBottom: '1px solid var(--border-color, #30363d)',
